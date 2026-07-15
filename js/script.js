@@ -1,6 +1,8 @@
 let playerHP = 100;
 let enemyHP = 100;
 
+let defending = false;
+
 const playerHPText = document.getElementById("playerHP");
 const enemyHPText = document.getElementById("enemyHP");
 
@@ -10,134 +12,159 @@ const enemyBar = document.getElementById("enemyBar");
 const attackBtn = document.getElementById("attackBtn");
 const healBtn = document.getElementById("healBtn");
 const restartBtn = document.getElementById("restartBtn");
+const defendBtn = document.getElementById("defendBtn");
 
 const battleLog = document.getElementById("battleLog");
 
 // 新增戰鬥紀錄
-function addLog(text){
+function addLog(text) {
 
-const li = document.createElement("li");
+    const li = document.createElement("li");
 
-li.textContent = text;
+    li.textContent = text;
 
-battleLog.prepend(li);
+    battleLog.prepend(li);
 
 }
 
 // 更新畫面
-function updateUI(){
+function updateUI() {
 
-playerHPText.textContent = `${playerHP} / 100`;
+    playerHPText.textContent = `${playerHP} / 100`;
 
-enemyHPText.textContent = `${enemyHP} / 100`;
+    enemyHPText.textContent = `${enemyHP} / 100`;
 
-playerBar.style.width = playerHP + "%";
+    playerBar.style.width = playerHP + "%";
 
-enemyBar.style.width = enemyHP + "%";
+    enemyBar.style.width = enemyHP + "%";
 
 }
 
 // 怪物攻擊
-function enemyAttack(){
+function enemyAttack() {
 
-if(enemyHP <= 0) return;
+    if (enemyHP <= 0) return;
 
-let damage = Math.floor(Math.random()*16)+5;
+    let damage = Math.floor(Math.random() * 16) + 5;
 
-playerHP -= damage;
+    if (defending) {
 
-if(playerHP < 0){
+        damage = Math.floor(damage / 2);
 
-playerHP = 0;
+        defending = false;
 
-}
+        addLog("🛡️ 防禦成功，傷害減半！");
 
-addLog(`👹 Slime 攻擊造成 ${damage} 點傷害`);
+    }
 
-updateUI();
+    playerHP -= damage;
 
-if(playerHP <= 0){
+    if (playerHP < 0) {
 
-alert("💀 Game Over");
+        playerHP = 0;
 
-attackBtn.disabled = true;
+    }
 
-healBtn.disabled = true;
+    addLog(`👹 Slime 攻擊造成 ${damage} 點傷害`);
 
-}
+    updateUI();
+
+    if (playerHP <= 0) {
+
+        alert("💀 Game Over");
+
+        attackBtn.disabled = true;
+
+        healBtn.disabled = true;
+
+    }
 
 }
 
 // 玩家攻擊
-attackBtn.addEventListener("click",function(){
+attackBtn.addEventListener("click", function () {
 
-let damage = Math.floor(Math.random()*21)+10;
+    let damage;
 
-enemyHP -= damage;
+    let critical = Math.random() < 0.2;
 
-if(enemyHP < 0){
+    if (critical) {
 
-enemyHP = 0;
+        damage = Math.floor(Math.random() * 21) + 30;
 
-}
+        addLog("💥 Critical Hit!");
 
-addLog(`⚔️ Hero 攻擊造成 ${damage} 點傷害`);
+    } else {
 
-updateUI();
+        damage = Math.floor(Math.random() * 21) + 10;
 
-if(enemyHP <= 0){
+    }
 
-addLog("🎉 Victory!");
+    enemyHP -= damage;
 
-alert("🏆 You Win!");
+    if (enemyHP < 0) {
 
-attackBtn.disabled = true;
+        enemyHP = 0;
 
-healBtn.disabled = true;
+    }
 
-return;
+    addLog(`⚔️ Hero 攻擊造成 ${damage} 點傷害`);
 
-}
+    updateUI();
 
-enemyAttack();
+    if (enemyHP <= 0) {
+
+        addLog("🎉 Victory!");
+
+        alert("🏆 You Win!");
+
+        attackBtn.disabled = true;
+
+        healBtn.disabled = true;
+
+        return;
+
+    }
+
+    enemyAttack();
 
 });
 
 // 補血
-healBtn.addEventListener("click",function(){
+healBtn.addEventListener("click", function () {
 
-let heal = Math.floor(Math.random()*16)+10;
+    let heal = Math.floor(Math.random() * 16) + 10;
 
-playerHP += heal;
+    playerHP += heal;
 
-if(playerHP > 100){
+    if (playerHP > 100) {
 
-playerHP = 100;
+        playerHP = 100;
 
-}
+    }
 
-addLog(`🧪 Hero 回復 ${heal} HP`);
+    addLog(`🧪 Hero 回復 ${heal} HP`);
 
-updateUI();
+    updateUI();
 
-enemyAttack();
+    enemyAttack();
 
 });
 
 // 重新開始
-restartBtn.addEventListener("click",function(){
+restartBtn.addEventListener("click", function () {
 
-playerHP = 100;
+    playerHP = 100;
 
-enemyHP = 100;
+    enemyHP = 100;
 
-battleLog.innerHTML = "";
+    battleLog.innerHTML = "";
 
-attackBtn.disabled = false;
+    attackBtn.disabled = false;
 
-healBtn.disabled = false;
+    healBtn.disabled = false;
 
-updateUI();
+    updateUI();
 
 });
 
