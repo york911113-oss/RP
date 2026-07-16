@@ -1,3 +1,4 @@
+alert("🎮 歡迎來到 Battle Arena！");
 let playerHP = 100;
 let enemyHP = 100;
 
@@ -81,54 +82,69 @@ function enemyAttack() {
 
 }
 
-// 玩家攻擊
-attackBtn.addEventListener("click", function () {
+//輸入名稱
+let playerName = prompt("請輸入你的遊戲名稱");
 
-    let damage;
+if (!playerName) {
+    playerName = "Hero";
+}
 
-    let critical = Math.random() < 0.2;
 
-    if (critical) {
 
-        damage = Math.floor(Math.random() * 21) + 30;
 
-        addLog("💥 Critical Hit!");
+document.getElementById("playerName").textContent = "🧙 " +playerName;
 
-    } else {
 
-        damage = Math.floor(Math.random() * 21) + 10;
 
-    }
 
-    enemyHP -= damage;
+    // 玩家攻擊
+    attackBtn.addEventListener("click", function () {
 
-    if (enemyHP < 0) {
+        let damage;
 
-        enemyHP = 0;
+        let critical = Math.random() < 0.2;
 
-    }
+        if (critical) {
 
-    addLog(`⚔️ Hero 攻擊造成 ${damage} 點傷害`);
+            damage = Math.floor(Math.random() * 21) + 30;
 
-    updateUI();
+            addLog("💥 Critical Hit!");
 
-    if (enemyHP <= 0) {
+        } else {
 
-        addLog("🎉 Victory!");
+            damage = Math.floor(Math.random() * 21) + 10;
 
-        alert("🏆 You Win!");
+        }
 
-        attackBtn.disabled = true;
+        enemyHP -= damage;
 
-        healBtn.disabled = true;
+        if (enemyHP < 0) {
 
-        return;
+            enemyHP = 0;
 
-    }
+        }
 
-    enemyAttack();
+        addLog(`⚔️ Hero 攻擊造成 ${damage} 點傷害`);
 
-});
+        updateUI();
+
+        if (enemyHP <= 0) {
+
+            addLog("🎉 Victory!");
+
+            alert("🏆 You Win!");
+
+            attackBtn.disabled = true;
+
+            healBtn.disabled = true;
+
+            return;
+
+        }
+
+        enemyAttack();
+
+    });
 
 // 補血
 healBtn.addEventListener("click", function () {
@@ -153,6 +169,10 @@ healBtn.addEventListener("click", function () {
 
 // 重新開始
 restartBtn.addEventListener("click", function () {
+    let yes = confirm("確定重新開始? ");
+    if (!yes) {
+        return;
+    }
 
     playerHP = 100;
 
