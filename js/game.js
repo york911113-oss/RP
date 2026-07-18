@@ -1,7 +1,9 @@
 const message = document.getElementById("message");
 
-let playerHP = 100;
-let enemyHP = 100;
+const MAX_HP = 200;
+
+let playerHP = MAX_HP;
+let enemyHP = MAX_HP;
 
 const playerBar = document.getElementById("playerBar");
 const enemyBar = document.getElementById("enemyBar");
@@ -15,11 +17,11 @@ const battleLog = document.getElementById("battleLog");
 // 更新血條
 function updateBar() {
 
-    playerBar.style.width = playerHP + "%";
-    playerBar.textContent = playerHP;
+    playerBar.style.width = (playerHP / MAX_HP) * 100 + "%";
+    enemyBar.style.width = (enemyHP / MAX_HP) * 100 + "%";
 
-    enemyBar.style.width = enemyHP + "%";
-    enemyBar.textContent = enemyHP;
+    playerBar.textContent = playerHP + " / " + MAX_HP;
+    enemyBar.textContent = enemyHP + " / " + MAX_HP;
 
 }
 
@@ -39,19 +41,19 @@ function enemyAttack() {
 
     if (enemyHP <= 0) return;
 
-    let critical = Math.random() < 0.25;
+    let critical = Math.random() < 0.15;
 
     let damage;
 
     if (critical) {
 
-        damage = Math.floor(Math.random() * 21) + 35;
+        damage = Math.floor(Math.random() * 11) + 20;
 
         addLog("💥 怪物爆擊！");
 
     } else {
 
-        damage = Math.floor(Math.random() * 21) + 20;
+        damage = Math.floor(Math.random() * 11) + 10;
 
     }
 
@@ -97,13 +99,13 @@ attackBtn.addEventListener("click", function () {
 
     if (critical) {
 
-        damage = Math.floor(Math.random() * 21) + 30;
+        damage = Math.floor(Math.random() * 11) + 25;
 
         addLog("💥 爆擊！");
 
     } else {
 
-        damage = Math.floor(Math.random() * 21) + 10;
+        damage = Math.floor(Math.random() * 11) + 12;
 
     }
 
@@ -147,13 +149,13 @@ attackBtn.addEventListener("click", function () {
 // 補血
 healBtn.addEventListener("click", function () {
 
-    let heal = Math.floor(Math.random() * 11) + 5;
+    let heal = Math.floor(Math.random() * 8) + 8;
 
     playerHP += heal;
 
-    if (playerHP > 100) {
+    if (playerHP > MAX_HP) {
 
-        playerHP = 100;
+        playerHP = MAX_HP;
 
     }
 
@@ -175,8 +177,8 @@ restartBtn.addEventListener("click", function () {
 
     }
 
-    playerHP = 100;
-    enemyHP = 100;
+    playerHP = MAX_HP;
+    enemyHP = MAX_HP;
 
     battleLog.innerHTML = "";
 
@@ -186,5 +188,6 @@ restartBtn.addEventListener("click", function () {
     updateBar();
 
 });
+
 
 updateBar();
