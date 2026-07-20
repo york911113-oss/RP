@@ -1,29 +1,25 @@
-function showEffect(text, type = "damage") {
+function showEffect(text, type, target) {
 
-    const div = document.createElement("div");
+    const effect = document.getElementById(target);
 
-    div.className = "damage";
+    effect.className = "effect";
+
+    if (type === "damage") {
+        effect.classList.add("damage");
+    }
 
     if (type === "heal") {
-
-        div.classList.add("heal");
-
+        effect.classList.add("heal");
     }
 
     if (type === "critical") {
-
-        div.classList.add("critical");
-
+        effect.classList.add("critical");
     }
 
-    div.textContent = text;
+    effect.textContent = text;
 
-    document.body.appendChild(div);
-
-    setTimeout(() => {
-
-        div.remove();
-
+    setTimeout(function () {
+        effect.textContent = "";
     }, 800);
 
 } const message = document.getElementById("message");
@@ -94,7 +90,7 @@ function enemyAttack() {
     }
 
     addLog("👹 怪物攻擊，造成 " + damage + " 點傷害");
-    showEffect("-" + damage);
+    showEffect("-" + damage, "damage", "playerEffect");
     if (critical) {
 
         message.innerHTML = "💥 怪物爆擊！造成 <b>" + damage + "</b> 點傷害！";
@@ -131,7 +127,7 @@ attackBtn.addEventListener("click", function () {
         damage = Math.floor(Math.random() * 11) + 25;
 
         addLog("💥 爆擊！");
-        showEffect("💥 -" + damage, "critical");
+        showEffect("💥 -" + damage, "critical", "enemyEffect");
 
     } else {
 
@@ -148,7 +144,12 @@ attackBtn.addEventListener("click", function () {
     }
 
     addLog("⚔️ 玩家攻擊，造成 " + damage + " 點傷害");
-    showEffect("-" + damage);
+
+    if (!critical) {
+
+        showEffect("-" + damage, "damage", "enemyEffect");
+
+    }
 
     if (critical) {
 
@@ -173,7 +174,11 @@ attackBtn.addEventListener("click", function () {
 
     }
 
-    enemyAttack();
+    setTimeout(function () {
+
+        enemyAttack();
+
+    }, 500);
 
 });
 
@@ -191,12 +196,16 @@ healBtn.addEventListener("click", function () {
     }
 
     addLog("❤️ 玩家恢復 " + heal + " 點生命");
-    showEffect("+" + heal, "heal");
+    showEffect("+" + heal, "heal", "playerEffect");
     message.innerHTML = "❤️ 玩家恢復 <b>" + heal + "</b> 點生命";
 
     updateBar();
 
-    enemyAttack();
+    setTimeout(function () {
+
+        enemyAttack();
+
+    }, 500);
 
 });
 

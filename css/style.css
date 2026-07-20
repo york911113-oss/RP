@@ -186,41 +186,6 @@ body::before {
 
 }
 
-.damage {
-    position: fixed;
-    left: 50%;
-    top: 45%;
-    transform: translate(-50%, -50%);
-    font-size: 48px;
-    font-weight: bold;
-    color: red;
-    pointer-events: none;
-    animation: damageUp .8s forwards;
-    z-index: 9999;
-
-}
-
-.heal {
-    color: #00ff66;
-}
-
-.critical {
-    color: gold;
-    font-size: 60px;
-
-}
-
-@keyframes damageUp {
-    0%{
-        opacity:1;
-        transform: translate(-50%,-50%);
-    }
-    100%{
-        opacity: 0;
-        transform: translate(-50%,-130px);
-    }
-
-}
 .effect{
 
 height:45px;
