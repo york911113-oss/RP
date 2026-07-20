@@ -1,4 +1,32 @@
-const message = document.getElementById("message");
+function showEffect(text, type = "damage") {
+
+    const div = document.createElement("div");
+
+    div.className = "damage";
+
+    if (type === "heal") {
+
+        div.classList.add("heal");
+
+    }
+
+    if (type === "critical") {
+
+        div.classList.add("critical");
+
+    }
+
+    div.textContent = text;
+
+    document.body.appendChild(div);
+
+    setTimeout(() => {
+
+        div.remove();
+
+    }, 800);
+
+} const message = document.getElementById("message");
 
 const MAX_HP = 200;
 
@@ -66,6 +94,7 @@ function enemyAttack() {
     }
 
     addLog("👹 怪物攻擊，造成 " + damage + " 點傷害");
+    showEffect("-" + damage);
     if (critical) {
 
         message.innerHTML = "💥 怪物爆擊！造成 <b>" + damage + "</b> 點傷害！";
@@ -102,6 +131,7 @@ attackBtn.addEventListener("click", function () {
         damage = Math.floor(Math.random() * 11) + 25;
 
         addLog("💥 爆擊！");
+        showEffect("💥 -" + damage, "critical");
 
     } else {
 
@@ -118,6 +148,7 @@ attackBtn.addEventListener("click", function () {
     }
 
     addLog("⚔️ 玩家攻擊，造成 " + damage + " 點傷害");
+    showEffect("-" + damage);
 
     if (critical) {
 
@@ -160,6 +191,7 @@ healBtn.addEventListener("click", function () {
     }
 
     addLog("❤️ 玩家恢復 " + heal + " 點生命");
+    showEffect("+" + heal, "heal");
     message.innerHTML = "❤️ 玩家恢復 <b>" + heal + "</b> 點生命";
 
     updateBar();
