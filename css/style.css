@@ -186,30 +186,53 @@ body::before {
 
 }
 
-.effect{
+.effect {
 
-height:45px;
+    height: 45px;
 
-font-size:38px;
+    font-size: 38px;
 
+    font-weight: bold;
+
+}
+
+.damage {
+
+    color: #ff3b3b;
+
+}
+
+.heal {
+
+    color: #00ff66;
+
+}
+
+.critical {
+
+    color: gold;
+
+}
+.info-card{
+background: rgba(40,40,40,.9);
+border: 2px solid #4da6ff;
+border-radius: 15px;
+padding: 20px;
+height: 100%;
+transition: .3s;
+}
+
+.info-card:hover{
+transform: scale(1.03);
+box-shadow: 0 0 20px rgba(77,166,255,.5);
+}
+
+.info-card h3{
+color:#4da6ff;
 font-weight:bold;
-
 }
 
-.damage{
-
-color:#ff3b3b;
-
-}
-
-.heal{
-
-color:#00ff66;
-
-}
-
-.critical{
-
-color:gold;
-
+.info-card p{
+margin:8px 0;
+font-size:18px;
 }
